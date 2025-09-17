@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Railway Track Monitoring Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <div id="root"></div>
+     <script type="module" src="/src/main.jsx"></script>
+  <style>
+    body {
+  background: linear-gradient(135deg, #e0f2fe, #fdf2f8, #ede9fe);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Heading */
+h1 {
+  background: linear-gradient(to right, #6366f1, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.5s ease-in-out;
+}
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.6rem; }
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Card Styling */
+.card {
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  background: linear-gradient(to bottom right, #ffffff, #f9fafb);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99,102,241,0.08), transparent 70%);
+  transform: rotate(25deg);
+}
+
+/* Status Pills */
+.status {
+  font-weight: bold;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  transition: background 0.3s, transform 0.2s;
+}
+.status-green { background: linear-gradient(to right, #22c55e, #16a34a); color: white; }
+.status-yellow { background: linear-gradient(to right, #facc15, #fbbf24); color: #1f2937; }
+.status-red { background: linear-gradient(to right, #ef4444, #b91c1c); color: white; }
+.status:hover { transform: scale(1.05); }
+
+/* Table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+thead {
+  background: linear-gradient(to right, #6366f1, #ec4899);
+  color: white;
+}
+tbody tr {
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+tbody tr:hover {
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Row highlights */
+.row-green { background-color: #dcfce7; }
+.row-yellow { background-color: #fef9c3; }
+.row-red { background-color: #fee2e2; }
+
+/* Buttons */
+button {
+  transition: all 0.3s ease;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Animations
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+} */
+
+    body {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    nav {
+    background: linear-gradient(to right, #2563eb, #3b82f6, #06b6d4);
+  }
+  nav a {
+    display: inline-block;
+    color: white;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;   /* bigger padding for button feel */
+    margin: 0 0.5rem;
+    border-radius: 9999px;   /* pill shape */
+    background: rgba(255, 255, 255, 0.15); /* subtle background */
+    transition: all 0.3s ease;
+  }
+  nav a:hover {
+    background: white;
+    color: #2563eb;   /* text turns blue on hover */
+    transform: translateY(-2px); /* small lift effect */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  nav .active-link {
+    background: white;
+    color: #2563eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+    nav {
+      background: linear-gradient(to right, #2563eb, #3b82f6, #06b6d4);
+    }
+    nav a {
+      color: white;
+      font-weight: 600;
+      transition: color 0.3s, transform 0.3s;
+    }
+    nav a:hover {
+      color: #facc15;
+      transform: scale(1.05);
+    }
+    section {
+      display: none;
+      padding: 2rem 0;
+    }
+    section.active {
+      display: block;
+    }
+    .status-green { background:#22c55e; color:white; font-weight:bold; border-radius:1rem; padding:1rem; text-align:center; }
+    .status-red { background:#ef4444; color:white; font-weight:bold; border-radius:1rem; padding:1rem; text-align:center; }
+    .row-green { background-color:#dcfce7; }
+    .row-yellow { background-color:#fef9c3; }
+    .row-red { background-color:#fee2e2; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+<nav class="p-4 shadow-lg">
+  <div class="flex justify-center flex-wrap">
+    <a href="#" class="active-link" onclick="setActive(this); showSection('gauge')"><i data-feather="sliders"></i> Gauge</a>
+    <a href="#" onclick="setActive(this); showSection('distance')"><i data-feather="ruler"></i> Distance</a>
+    <a href="#" onclick="setActive(this); showSection('alignment')"><i data-feather="activity"></i> Alignment</a>
+    <a href="#" onclick="setActive(this); showSection('wear')"><i data-feather="cpu"></i> Wear</a>
+    <a href="#" onclick="setActive(this); showSection('defects')"><i data-feather="alert-circle"></i> Defects</a>
+    <a href="#" onclick="setActive(this); showSection('log')"><i data-feather="database"></i> Data Log</a>
+  </div>
+</nav>
+
+  <div class="container mx-auto p-6">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">🚆 Railway Track Monitoring Dashboard</h1>
+
+    <!-- Gauge Slide -->
+    <section id="gauge" class="active">
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-2"><i data-feather="sliders"></i> Gauge Parameter</h2>
+        <div class="flex justify-center"><canvas id="gaugeChart"></canvas></div>
+        <p class="text-center mt-2 text-lg font-medium" id="gaugeValue">0 mm</p>
+      </div>
+    </section>
+
+    <!-- Distance Slide -->
+    <section id="distance">
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-2"><i data-feather="ruler"></i> Distance Between Rails</h2>
+        <p class="text-3xl font-bold text-center text-gray-700" id="distanceValue">0 mm</p>
+      </div>
+    </section>
+
+    <!-- Alignment Slide -->
+    <section id="alignment">
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-2"><i data-feather="activity"></i> Track Alignment</h2>
+        <canvas id="alignmentChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Wear Slide -->
+    <section id="wear">
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-2"><i data-feather="cpu"></i> Wear Measurement</h2>
+        <p class="text-gray-700">Vertical Unevenness: <span id="wearVertical">0</span> mm</p>
+        <p class="text-gray-700">Lateral Unevenness: <span id="wearLateral">0</span> mm</p>
+      </div>
+    </section>
+
+    <!-- Defects Slide -->
+    <section id="defects">
+      <div class="card">
+        <h2 class="text-xl font-semibold mb-2"><i data-feather="alert-circle"></i> Internal Defects</h2>
+        <div id="defectStatus" class="status-green">✅ Track Healthy</div>
+      </div>
+    </section>
+
+    <!-- Data Log Slide -->
+    <section id="log">
+      <div class="card">
+        <h2 class="text-2xl font-bold mb-4">Sensor Data Log</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white rounded-xl shadow-md">
+            <thead class="bg-gray-100">
+              <tr>
+                <th>Time</th>
+                <th>Gauge (mm)</th>
+                <th>Distance (mm)</th>
+                <th>Alignment</th>
+                <th>Vertical Wear (mm)</th>
+                <th>Lateral Wear (mm)</th>
+                <th>Defects</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+        <button id="exportBtn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Export CSV</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    feather.replace();
+
+  // Highlight active nav link
+  function setActive(el) {
+    document.querySelectorAll("nav a").forEach(link => link.classList.remove("active-link"));
+    el.classList.add("active-link");
+  }
+    // Section Navigation
+    function showSection(id){
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // Charts
+    const gaugeChart = new Chart(document.getElementById('gaugeChart'), {
+      type: 'doughnut',
+      data: { datasets: [{ data:[0,2000], backgroundColor:['#3b82f6','#e5e7eb'], borderWidth:0 }] },
+      options: { rotation:-90*Math.PI/180, circumference:180*Math.PI/180, cutout:'70%', plugins:{legend:{display:false}} }
+    });
+    const alignmentChart = new Chart(document.getElementById('alignmentChart'), {
+      type:'line',
+      data:{ labels:[0,10,20,30,40,50], datasets:[{ label:'Alignment', data:[0,0,0,0,0,0], borderColor:'#10b981', borderWidth:3, tension:0.4, fill:true, backgroundColor:'rgba(16,185,129,0.1)' }] },
+      options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+    });
+
+    function updateDashboard(data){
+      document.getElementById('gaugeValue').innerText=data.gauge+' mm';
+      document.getElementById('distanceValue').innerText=data.distance+' mm';
+      document.getElementById('wearVertical').innerText=data.wearVertical;
+      document.getElementById('wearLateral').innerText=data.wearLateral;
+
+      gaugeChart.data.datasets[0].data=[data.gauge,2000-data.gauge]; gaugeChart.update();
+      alignmentChart.data.datasets[0].data=data.alignment.slice(-20); alignmentChart.update();
+
+      const status=document.getElementById('defectStatus');
+      if(data.defects){ status.className="status-red"; status.innerText="⚠️ Defect Detected!"; }
+      else{ status.className="status-green"; status.innerText="✅ Track Healthy"; }
+
+      const row=document.createElement('tr');
+      let critical=false, warning=false;
+      if(data.gauge<800||data.gauge>1700)critical=true; else if(data.gauge<1000||data.gauge>1500)warning=true;
+      if(data.wearVertical>=4||data.wearLateral>=4)critical=true; else if(data.wearVertical>=2||data.wearLateral>=2)warning=true;
+      let maxAlign=Math.max(...data.alignment);
+      if(maxAlign>=1.5)critical=true; else if(maxAlign>=1.0)warning=true;
+      if(data.defects)critical=true;
+      row.classList.add(critical?"row-red":warning?"row-yellow":"row-green");
+
+      const time=new Date().toLocaleTimeString();
+      row.innerHTML=`
+        <td>${time}</td><td>${data.gauge}</td><td>${data.distance}</td>
+        <td>${data.alignment.map(a=>a.toFixed(2)).join(', ')}</td>
+        <td>${data.wearVertical}</td><td>${data.wearLateral}</td>
+        <td>${data.defects?'Yes':'No'}</td>
+      `;
+      const tableBody=document.getElementById('dataTableBody'); tableBody.appendChild(row);
+      while(tableBody.rows.length>50){ tableBody.deleteRow(0); }
+    }
+
+    // Simulated Data
+    setInterval(()=>{
+      const data={
+        gauge:Math.floor(Math.random()*2000),
+        distance:Math.floor(Math.random()*2000),
+        alignment:Array.from({length:6},()=>Math.random()*2),
+        wearVertical:(Math.random()*5).toFixed(2),
+        wearLateral:(Math.random()*5).toFixed(2),
+        defects:Math.random()>0.7
+      };
+      updateDashboard(data);
+    },2000);
+  </script>
+</body>
+</html>
